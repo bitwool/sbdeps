@@ -1,19 +1,27 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
+	// 静态文件路由
+	r.Static("/static", "./static")
+
+	// 路由处理
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "My Gin App",
 		})
 	})
 
-	// Add more routes here
+	// 加载模板文件
+	r.LoadHTMLGlob("templates/*")
 
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	// 启动服务
+	r.Run(":8080")
 }
