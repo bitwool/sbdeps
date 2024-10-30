@@ -1,16 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>简单网页示例</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>版本列表</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
-      <h1>欢迎来到我的网页</h1>
-      <p id="message">这是一个简单的示例页面。</p>
-      <button id="changeMessageButton">点击我</button>
+      <h1>版本列表</h1>
+      <table id="versionTable">
+        <thead>
+          <tr>
+            <th>sbVersion</th>
+            <th>springVersion</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="depsSection" style="display: none">
+        <h2 class="deps-title">依赖列表</h2>
+        <table id="depsTable">
+          <thead>
+            <tr>
+              <th>groupId</th>
+              <th>artifactId</th>
+              <th>version</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <a href="#" id="backLink">返回版本列表</a>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
