@@ -1,6 +1,11 @@
-fetch("data.json")
-    .then((response) => response.json())
-    .then((data) => {
+// 获取版本列表并显示
+fetch('data.json')
+    .then(response => response.json())
+    .then(data => {
+        // 过滤掉 hasDoc 为 false 的项
+        data = data.filter(item => item.hasDoc);
+        console.log(data);
+
         const versionTableBody = document.querySelector("#versionTable tbody");
         const depsSection = document.getElementById("depsSection");
         const depsTableBody = document.querySelector("#depsTable tbody");
@@ -16,11 +21,11 @@ fetch("data.json")
             link.href = "#";
             link.textContent = item.sbVersion;
             link.addEventListener("click", () => {
-                showDeps(item.deps, item.sbVersion);
+                showDeps(item.sbVersion);
             });
 
             sbVersionCell.appendChild(link);
-            springVersionCell.textContent = item.springVersion;
+            springVersionCell.textContent = item.springVersion || "N/A";
 
             row.appendChild(sbVersionCell);
             row.appendChild(springVersionCell);
@@ -28,33 +33,39 @@ fetch("data.json")
             versionTableBody.appendChild(row);
         });
 
-        function showDeps(deps, sbVersion) {
-            // 隐藏版本列表，显示依赖列表
-            document.getElementById("versionTable").style.display = "none";
-            depsSection.style.display = "block";
-            document.querySelector(".deps-title").textContent =
-                "依赖列表 - sbVersion: " + sbVersion;
+        function showDeps(sbVersion) {
+            // 从 ./data/version.json 获取依赖列表
+            fetch('./data/' + sbVersion+ '.json')
+                .then(response => response.json())
+                .then(deps => {
+                    // 隐藏版本列表，显示依赖列表
+                    document.getElementById("versionTable").style.display = "none";
+                    depsSection.style.display = "block";
+                    document.querySelector(".deps-title").textContent =
+                        "依赖列表 - sbVersion: " + sbVersion;
 
-            // 清空之前的依赖列表
-            depsTableBody.innerHTML = "";
+                    // 清空之前的依赖列表
+                    depsTableBody.innerHTML = "";
 
-            // 填充依赖列表表格
-            deps.forEach((dep) => {
-                const row = document.createElement("tr");
-                const groupIdCell = document.createElement("td");
-                const artifactIdCell = document.createElement("td");
-                const versionCell = document.createElement("td");
+                    // 填充依赖列表表格
+                    deps.forEach((dep) => {
+                        const row = document.createElement("tr");
+                        const groupIdCell = document.createElement("td");
+                        const artifactIdCell = document.createElement("td");
+                        const versionCell = document.createElement("td");
 
-                groupIdCell.textContent = dep.groupId;
-                artifactIdCell.textContent = dep.artifactId;
-                versionCell.textContent = dep.version;
+                        groupIdCell.textContent = dep.groupId;
+                        artifactIdCell.textContent = dep.artifactId;
+                        versionCell.textContent = dep.version;
 
-                row.appendChild(groupIdCell);
-                row.appendChild(artifactIdCell);
-                row.appendChild(versionCell);
+                        row.appendChild(groupIdCell);
+                        row.appendChild(artifactIdCell);
+                        row.appendChild(versionCell);
 
-                depsTableBody.appendChild(row);
-            });
+                        depsTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error("获取依赖列表出错：", error));
         }
 
         backLink.addEventListener("click", (e) => {
@@ -63,4 +74,4 @@ fetch("data.json")
             document.getElementById("versionTable").style.display = "table";
         });
     })
-    .catch((error) => console.error("Error fetching data:", error));
+    .catch(error => console.error("获取版本列表出错：", error));
