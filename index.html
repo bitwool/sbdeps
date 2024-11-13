@@ -1,37 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>版本列表</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Vue + TS</title>
   </head>
   <body>
-    <div class="container">
-      <h1>版本列表</h1>
-      <table id="versionTable">
-        <thead>
-          <tr>
-            <th>sbVersion</th>
-            <th>SpringVersion</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div id="depsSection" style="display: none">
-        <h2 class="deps-title">依赖列表</h2>
-        <table id="depsTable">
-          <thead>
-            <tr>
-              <th>groupId</th>
-              <th>artifactId</th>
-              <th>version</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <a href="#" id="backLink">返回版本列表</a>
-      </div>
-    </div>
-    <script src="script.js"></script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
